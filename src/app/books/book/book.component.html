@@ -1,12 +1,50 @@
-<div class="flex-container">
-  <div class="book-info">
-    <div class="book-info-image">image</div>
-    <div class="book-details-container">
-      <div class="book-details">
-        <p> Book Title </p>
-      </div>
-      <div class="book-details">Author:</div>
-      <div class="book-details">Date:</div>
-    </div>
+<div class="jumbotron">
+  <img class="float-left" src="{{selectedBook.image}}" alt="Card image cap">
+  <h1 class="bookName">{{selectedBook.title}}</h1>
+  <p>Author: {{selectedBook.author}}</p>
+  <p>Publication date: {{selectedBook.date | date: 'dd/MM/yyyy' }}</p>
+  <div class="btnClass">
+    <!-- <button class="btn btn-primary col-xs-4  editBtn" type="button" [routerLink]="['/books', 5, 'edit']">Edit Book</button> -->
+    <button class="btn btn-primary col-xs-4  editBtn" type="button" (click)="onEdit(content)">Edit Book</button>
+    <button class="col-xs-4 btn btn-primary  goBackBtn" type="button" [routerLink]="['/books']">Go Back</button>
   </div>
 </div>
+
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Book</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <form>
+      <div class="form-group">
+        <label for="title">Book Title:</label>
+        <input type="text" class="form-control" id="editTitle">
+      </div>
+      <div class="form-group">
+        <label for="author">Author:</label>
+        <input type="text" class="form-control" id="editAuthor">
+      </div>
+      <div class="form-group">
+        <label for="date">Publication Date:</label>
+        <input type="date" class="form-control" id="editeDate">
+      </div>
+      <div class="form-group">
+        <label for="image">cover:</label>
+        <input type="file" id="editeImage">
+      </div>
+
+    </form>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary saveBtn">Save</button>
+    <button type="button" class="btn btn-danger" (click)="c('Close click')">Cancel</button>
+
+  </div>
+</ng-template>

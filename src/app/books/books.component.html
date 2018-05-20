@@ -1,14 +1,11 @@
 <div class="flex-container">
-  <div class="bookHolder">
-    <div class="bookHolderImage">top</div>
-    <div class="bookHolderTitle">bottom</div>
-  </div>
-  <div class="bookHolder">
-    <div class="bookHolderImage">top</div>
-    <div class="bookHolderTitle">bottom</div>
-  </div>
-  <div class="bookHolder">
-    <div class="bookHolderImage">top</div>
-    <div class="bookHolderTitle">bottom</div>
+  <div class="card" style="width: 18rem;" *ngFor="let book of arrBooks; let i = index">
+    <img class="card-img-top" src="{{ book.image }}" alt="Card image cap">
+    <div class="card-body">
+      <h4 class="card-title">{{ book.title }}</h4>
+      <p class="card-text">author: {{book.author}}</p>
+      <button type="button" [routerLink]="['/books', book.id,  book.title, book.author, book.image, book.date]" class="btn btn-primary ">More Details</button>
+    </div>
   </div>
 </div>
+<router-outlet> </router-outlet>
