@@ -1,8 +1,8 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpClientModule } from "@angular/common/http";
-import { HttpModule } from "@angular/http";
+import { HttpModule, JsonpModule } from "@angular/http";
 import { NgModule } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from "./app.component";
@@ -30,7 +30,9 @@ import { AppRoutingModule } from "./app-routing.module";
     BrowserModule,
     HttpClientModule,
     HttpModule,
+    JsonpModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     NgbModule.forRoot()
   ],
   providers: [BookService, GetDataService],

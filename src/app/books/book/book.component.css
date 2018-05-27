@@ -5,6 +5,10 @@ img {
   padding: 5px;
 }
 
+/* .JumboHr {
+  margin-top: -1%
+} */
+
 .goBackBtn {
   float: right;
 }
@@ -22,20 +26,34 @@ img {
   margin-top: -2%
 }
 
-button {
-  margin-top: 3%;
+.footerBtn {
+  margin-top: 5%;
+}
+
+.deleteBtn {
+  float: right;
 }
 
 @media only screen and (max-width: 900px) {
+  .jumbotron {
+    margin: 5%;
+    height: 400px;
+  }
   .goBackBtn {
-    width: 150px;
+    width: 250px;
+    margin-top: 3%;
   }
   .editBtn {
-    width: 150px;
+    width: 250px;
+    margin-top: 3%;
   }
   img {
     width: 200px;
     margin-top: -4%;
     padding: 5px;
   }
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
 }

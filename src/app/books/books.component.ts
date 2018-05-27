@@ -3,6 +3,8 @@ import { BookService } from "./booksService.service";
 import { GetDataService } from "../get-data-service.service";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { Http, Response, Headers } from "@angular/http";
+// import { AddBookComponent } from "./add-book/add-book.component";
 
 @Component({
   selector: "app-books",
@@ -17,12 +19,20 @@ export class BooksComponent implements OnInit {
     private bookService: BookService,
     private httpService: HttpClient,
     private getDataService: GetDataService,
-    private router: Router
+    // private addBookComponent: AddBookComponent,
+    private router: Router,
+    private http: Http
   ) {}
 
+  bookList = [];
+
+  getBooksData() {
+    this.http.get("/assets/data/books.json").subscribe((res: Response) => {
+      this.arrBooks = res.json();
+    });
+  }
+
   ngOnInit() {
-    this.getDataService
-      .getBooksData()
-      .subscribe(data => (this.arrBooks = data));
+    this.getBooksData();
   }
 }

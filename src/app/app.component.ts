@@ -9,8 +9,4 @@ import { GetDataService } from "./get-data-service.service";
   providers: [GetDataService]
 })
 export class AppComponent {
-  // constructor(private getDataService: GetDataService) {}
-  // ngOnInit() {
-  //   this.etDataService.gstJsonData();
-  // }
 }

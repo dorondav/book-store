@@ -1,9 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, NgModule, OnInit } from "@angular/core";
 import { BookService } from "../booksService.service";
 import { HttpClient } from "@angular/common/http";
 import { GetDataService } from "../../get-data-service.service";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-book",
@@ -11,7 +12,10 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ["./book.component.css"]
 })
 export class BookComponent implements OnInit {
-  public arrBooks = [];
+  arrBooks = [];
+  editBook: FormGroup;
+  id: number;
+
   selectedBook: {
     id: number;
     title: string;
@@ -19,9 +23,6 @@ export class BookComponent implements OnInit {
     image: string;
     date: string;
   };
-  bookAuthor = "";
-  bookImage = "";
-  bookPublication = "";
 
   constructor(
     private bookService: BookService,
@@ -32,11 +33,7 @@ export class BookComponent implements OnInit {
     private modalService: NgbModal
   ) {}
 
-  ngOnInit() {
-    this.getDataService
-      .getBooksData()
-      .subscribe(data => (this.arrBooks = data));
-
+  showBookOnSelectInfo() {
     this.selectedBook = {
       id: this.route.snapshot.params["id"],
       title: this.route.snapshot.params["title"],
@@ -55,5 +52,36 @@ export class BookComponent implements OnInit {
 
   onEdit(content) {
     this.modalService.open(content, { size: "lg", centered: true });
+  }
+
+  getUrlId() {
+    this.route.params.subscribe(params => {
+      this.id = params["id"];
+    });
+  }
+
+  ngOnInit() {
+    this.getUrlId();
+    this.showBookOnSelectInfo();
+    this.initForm();
+  }
+
+  deleteBookBtn() {
+    this.bookService.deleteBook();
+  }
+  private initForm() {
+    this.route.params.subscribe(params => {
+      let bookToEdit = params;
+
+      this.editBook = new FormGroup({
+        author: new FormControl(bookToEdit.author, Validators.required),
+        title: new FormControl(bookToEdit.title, Validators.required),
+        date: new FormControl(bookToEdit.date, Validators.required),
+        image: new FormControl(bookToEdit.image, Validators.required)
+      });
+    });
+  }
+  onSave() {
+    return "hello";
   }
 }

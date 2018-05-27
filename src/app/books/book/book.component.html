@@ -1,6 +1,8 @@
 <div class="jumbotron">
-  <img class="float-left" src="{{selectedBook.image}}" alt="Card image cap">
+  <button type="submit" class="btn btn-danger  deleteBtn" (click)=" deleteBookBtn(id)">Delete book</button>
+  <img class="float-left" src="{{selectedBook.image}}">
   <h1 class="bookName">{{selectedBook.title}}</h1>
+
   <p>Author: {{selectedBook.author}}</p>
   <p>Publication date: {{selectedBook.date | date: 'dd/MM/yyyy' }}</p>
   <div class="btnClass">
@@ -21,30 +23,38 @@
   </div>
   <div class="modal-body">
 
-    <form>
+    <form [formGroup]="editBook" (NgSubmit)="onSave()">
+
       <div class="form-group">
-        <label for="title">Book Title:</label>
-        <input type="text" class="form-control" id="editTitle">
+        <label for="title">Book Title: </label>
+        <input type="text" class="form-control" name="title" id="editTitle" [formControlName]="'title'">
+        <span class="help-block" *ngIf="!editBook.get('title').valid && editBook.get('title').touched">Please enter book title</span>
       </div>
       <div class="form-group">
-        <label for="author">Author:</label>
-        <input type="text" class="form-control" id="editAuthor">
+        <label for="author">Author: </label>
+        <input type="text" class="form-control" formControlName="'author'" id="editAuthor">
+        <span class="help-block" *ngIf="!editBook.get('author').valid && editBook.get('author').touched">Please enter author name</span>
+
       </div>
       <div class="form-group">
         <label for="date">Publication Date:</label>
-        <input type="date" class="form-control" id="editeDate">
+        <input type="date" class="form-control" [formControlName]="'date'" id="editeDate">
+        <span *ngIf="!editBook.get('date').valid && editBook.get('date').touched" class="help-block">Please enter Publication date</span>
+
       </div>
       <div class="form-group">
         <label for="image">cover:</label>
         <input type="file" id="editeImage">
+        <span class="help-block" *ngIf="!editBook.get('image').valid && editBook.get('date').touched">Please enter book cover</span>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary footerBtn" [disabled]="!editBook.valid" (click)="onSave()">Save</button>
+        <button type="submit" class="btn btn-danger footerBtn" (click)="c('Close click')">Cancel</button>
       </div>
 
     </form>
 
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary saveBtn">Save</button>
-    <button type="button" class="btn btn-danger" (click)="c('Close click')">Cancel</button>
 
-  </div>
 </ng-template>

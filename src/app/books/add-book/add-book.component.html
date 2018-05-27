@@ -1,29 +1,36 @@
 <div class="card">
   <div class="card-header">Add new book to shop</div>
   <div class="card-body">
-    <form>
+    <form [formGroup]="addBookForm" (ngSubmit)="onAdd()">
       <div class="form-group">
         <label for="title">Book Title:</label>
-        <input type="text" class="form-control" id="editTitle">
+        <input type="text" class="form-control" id="addTitle" [formControlName]="'addTitle'">
+        <span class="help-block" *ngIf="!addBookForm.get('addTitle').valid && addBookForm.get('addTitle').touched">Please enter book title</span>
+
       </div>
       <div class="form-group">
         <label for="author">Author:</label>
-        <input type="text" class="form-control" id="editAuthor">
+        <input type="text" class="form-control" id="addAuthor" [formControlName]="'addAuthor'">
+        <span class="help-block" *ngIf="!addBookForm.get('addAuthor').valid && addBookForm.get('addAuthor').touched">Please enter author name</span>
+
       </div>
       <div class="form-group">
         <label for="date">Publication Date:</label>
-        <input type="date" class="form-control" id="editeDate">
+        <input type="date" class="form-control" id="addeDate" [formControlName]="'addDate'">
+        <span class="help-block" *ngIf="!addBookForm.get('addDate').valid && addBookForm.get('addDate').touched">Please enter publication date</span>
+
       </div>
       <div class="form-group">
         <label for="image">cover:</label>
-        <input type="file" id="editeImage">
+        <input type="file" id="addImage" [formControlName]="'addImage'">
+        <span class="help-block" *ngIf="!addBookForm.get('addImage').valid && addBookForm.get('addImage').touched">Please enter book cover</span>
+
       </div>
 
       <button type="submit" class="btn btn-primary addBook">Submit</button>
       <button type="submit" class="btn btn-danger cancel" routerLink="/books/">Cancel </button>
 
     </form>
-
 
   </div>
 </div>

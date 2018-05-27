@@ -1,44 +1,47 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { Http } from "@angular/http";
+import { ActivatedRoute, Params, Router } from "@angular/router";
+import { Subject } from "rxjs";
+import "rxjs/Rx";
+
+import { BookInformation } from "../book.model";
 import { GetDataService } from "../get-data-service.service";
 
 @Injectable()
-export class BookService {
+export class BookService implements OnInit {
+  private editedBooks: BookInformation[] = [];
   // public showSingleBook = [];
-  public arrBooks = [];
-
+  private arrBooks = [];
+  booksChanged = new Subject<BookInformation[]>();
+  // url: string = "assets/data/books.json";
+  id = "";
   constructor(
     private httpService: HttpClient,
-    private getDataService: GetDataService
+    private getDataService: GetDataService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: Http
   ) {}
+  books = [];
+  ngOnInit() {}
 
-  // selectBookById(id: number) {
-  //   this.showSingleBook.push(this.arrBooks[id]);
-  //   this.showSingleBook.splice(id, 1);
-  // }
-  // getBooks() {
-  //   return this.arrBooks;
-  // }
+  updateBook() {
+    // return this.http.put(
+    //   "https://bookstore-f12d4.firebaseio.com/data.json",
+    //   this.books
+    // );
+  }
 
-  // getBook(id: number) {
-  //   const book = this.arrBooks.find(s => {
-  //     return s.id === id;
-  //   });
-  //   return book;
-  // }
+  deleteBook() {
+    console.log("book no" + "" + "was deleted");
 
-  // updateBook(
-  //   id: number,
-  //   bookInfo: { title: string; author: string; date: string; image: string }
-  // ) {
-  //   const book = this.arrBooks.find(s => {
-  //     return s.id === id;
-  //   });
-  //   if (book) {
-  //     book.title = bookInfo.title;
-  //     book.author = bookInfo.author;
-  //     book.date = bookInfo.date;
-  //     book.image = bookInfo.image;
-  //   }
-  // }
+    //   let search = new URLSearchParams();
+    //   search.set("id", "title");
+    //   search.set("Delete", this.id);
+
+    //   this.http
+    //     .delete(this.url + { search })
+    //     .subscribe(res => console.log(res.json()));
+  }
 }
