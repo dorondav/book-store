@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-header">Add new book to shop</div>
   <div class="card-body">
-    <form [formGroup]="addBookForm" (ngSubmit)="onAdd()">
+    <form [formGroup]="addBookForm" (ngSubmit)="onNewSave() ">
       <div class="form-group">
         <label for="title">Book Title:</label>
         <input type="text" class="form-control" id="addTitle" [formControlName]="'addTitle'">
@@ -9,10 +9,14 @@
 
       </div>
       <div class="form-group">
+        <label for="author">Book ID:</label>
+        <input type="number" class="form-control" id="id" [formControlName]="'id'">
+        <span class="help-block" *ngIf="!addBookForm.get('id').valid && addBookForm.get('id').touched">Please enter book ID</span>
+      </div>
+      <div class="form-group">
         <label for="author">Author:</label>
         <input type="text" class="form-control" id="addAuthor" [formControlName]="'addAuthor'">
         <span class="help-block" *ngIf="!addBookForm.get('addAuthor').valid && addBookForm.get('addAuthor').touched">Please enter author name</span>
-
       </div>
       <div class="form-group">
         <label for="date">Publication Date:</label>
@@ -27,7 +31,7 @@
 
       </div>
 
-      <button type="submit" class="btn btn-primary addBook">Submit</button>
+      <button type="submit" class="btn btn-primary addBook">Save</button>
       <button type="submit" class="btn btn-danger cancel" routerLink="/books/">Cancel </button>
 
     </form>

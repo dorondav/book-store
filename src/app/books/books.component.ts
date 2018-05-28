@@ -1,38 +1,35 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { BookService } from "./booksService.service";
-import { GetDataService } from "../get-data-service.service";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { Http, Response, Headers } from "@angular/http";
+import { NewBookService } from "../new-book-service.service";
+import { BookInformation } from "../book.model";
+import { GetDataService } from "./get-data-service.service";
 // import { AddBookComponent } from "./add-book/add-book.component";
 
 @Component({
   selector: "app-books",
   templateUrl: "./books.component.html",
   styleUrls: ["./books.component.css"],
-  providers: [GetDataService, BookService]
+  providers: [GetDataService]
 })
 export class BooksComponent implements OnInit {
-  public arrBooks = [];
+  constructor(private getDataService: GetDataService, private router: Router) {}
+  books: BookInformation[];
+  id: number;
 
-  constructor(
-    private bookService: BookService,
-    private httpService: HttpClient,
-    private getDataService: GetDataService,
-    // private addBookComponent: AddBookComponent,
-    private router: Router,
-    private http: Http
-  ) {}
-
-  bookList = [];
-
-  getBooksData() {
-    this.http.get("/assets/data/books.json").subscribe((res: Response) => {
-      this.arrBooks = res.json();
-    });
-  }
+  bookDepository: {
+    id: number;
+    title: string;
+    date: string;
+    author: string;
+    image: string;
+  }[] = [];
 
   ngOnInit() {
-    this.getBooksData();
+    this.getDataService.getUrlId();
+    this.bookDepository = this.getDataService.bookDepository;
+    this.getDataService.bookChanged.subscribe((books: BookInformation[]) => {
+      this.books = books;
+    });
   }
 }

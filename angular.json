@@ -80,7 +80,9 @@
             "scripts": [],
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/assets/data/books.json"
+
             ]
           }
         },

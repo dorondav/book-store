@@ -1,38 +1,43 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Http, Response, Headers } from "@angular/http";
-import { HttpClient } from "@angular/common/http";
 import { BookInformation } from "../../book.model";
+import { GetDataService } from "../get-data-service.service";
 
 @Component({
   selector: "app-add-book",
   templateUrl: "./add-book.component.html",
-  styleUrls: ["./add-book.component.css"]
+  styleUrls: ["./add-book.component.css"],
+  providers: []
 })
 export class AddBookComponent implements OnInit {
-   addBookForm: FormGroup;
-  newBookObj: BookInformation[] = [];
-  addAuthor = "";
-  addTitle = "";
-  addDate = "";
-  addImage = "";
-  constructor(private http: Http) {}
+  addBookForm: FormGroup;
+  addedBook: any;
+  bookDepository = [];
+  id: number;
+  addAuthor: string = "";
+  addTitle: string = "";
+  addDate: string = "";
+  addImage: string = "";
+  newBookArray: {
+    id: number;
+    addAuthor: string;
+    addTitle: string;
+    addDate: string;
+    addImage: string;
+  }[] = [];
 
-  onAdd() {
-    // this.http
-    // .post("/assets/data/books.json", this.addBookForm.value)
-    // .subscribe((res: Response) => {
-    //   console.log(res);
-    //   res;
-    // });
+  constructor(private getDataService: GetDataService) {}
 
+  onNewSave() {
+    this.getDataService.getUrlId();
+    this.getDataService.addNewBook(this.addBookForm.value);
     console.log(this.addBookForm);
-
-    return this.addBookForm.
+    return this.addBookForm;
   }
 
   ngOnInit() {
     this.addBookForm = new FormGroup({
+      id: new FormControl(null, Validators.required),
       addAuthor: new FormControl(null, [
         Validators.required,
         Validators.minLength(4)

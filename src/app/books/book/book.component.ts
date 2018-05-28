@@ -1,22 +1,22 @@
 import { Component, NgModule, OnInit } from "@angular/core";
-import { BookService } from "../booksService.service";
 import { HttpClient } from "@angular/common/http";
-import { GetDataService } from "../../get-data-service.service";
+import { GetDataService } from "../get-data-service.service";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-
+import { FormGroup, FormControl, Validators, NgForm } from "@angular/forms";
+import { BookInformation } from "../../book.model";
 @Component({
   selector: "app-book",
   templateUrl: "./book.component.html",
-  styleUrls: ["./book.component.css"]
+  styleUrls: ["./book.component.css"],
+  providers: []
 })
 export class BookComponent implements OnInit {
-  arrBooks = [];
+  books: BookInformation[];
   editBook: FormGroup;
   id: number;
 
-  selectedBook: {
+  bookDepository: {
     id: number;
     title: string;
     author: string;
@@ -25,8 +25,6 @@ export class BookComponent implements OnInit {
   };
 
   constructor(
-    private bookService: BookService,
-    private httpService: HttpClient,
     private getDataService: GetDataService,
     private router: Router,
     private route: ActivatedRoute,
@@ -34,7 +32,7 @@ export class BookComponent implements OnInit {
   ) {}
 
   showBookOnSelectInfo() {
-    this.selectedBook = {
+    this.bookDepository = {
       id: this.route.snapshot.params["id"],
       title: this.route.snapshot.params["title"],
       author: this.route.snapshot.params["author"],
@@ -42,11 +40,11 @@ export class BookComponent implements OnInit {
       date: this.route.snapshot.params["date"]
     };
     this.route.params.subscribe((params: Params) => {
-      this.selectedBook.id = params["id"];
-      this.selectedBook.title = params["title"];
-      this.selectedBook.author = params["author"];
-      this.selectedBook.image = params["image"];
-      this.selectedBook.date = params["date"];
+      this.bookDepository.id = params["id"];
+      this.bookDepository.title = params["title"];
+      this.bookDepository.author = params["author"];
+      this.bookDepository.image = params["image"];
+      this.bookDepository.date = params["date"];
     });
   }
 
@@ -54,24 +52,36 @@ export class BookComponent implements OnInit {
     this.modalService.open(content, { size: "lg", centered: true });
   }
 
-  getUrlId() {
-    this.route.params.subscribe(params => {
-      this.id = params["id"];
-    });
+  onUpdateBook() {
+    this.getDataService.getUrlId();
+
+    // this.getDataService.getBook(index);
+    // const newBook = new BookInformation(
+    //   this.id,
+    //   this.editBook.value["title"],
+    //   this.editBook.value["date"],
+    //   this.editBook.value["author"],
+    //   this.editBook.value["image"]
+    // );
+    this.getDataService.updateBook(this.id, this.editBook.value);
   }
 
   ngOnInit() {
-    this.getUrlId();
+    this.getDataService.getUrlId();
     this.showBookOnSelectInfo();
     this.initForm();
+    this.getDataService.bookChanged.subscribe((books: BookInformation[]) => {
+      this.books = books;
+    });
   }
 
-  deleteBookBtn() {
-    this.bookService.deleteBook();
-  }
   private initForm() {
     this.route.params.subscribe(params => {
       let bookToEdit = params;
+      let author = "";
+      let title = "";
+      let date = "";
+      let image = "";
 
       this.editBook = new FormGroup({
         author: new FormControl(bookToEdit.author, Validators.required),
@@ -81,7 +91,7 @@ export class BookComponent implements OnInit {
       });
     });
   }
-  onSave() {
-    return "hello";
+  deleteBookBtn() {
+    return;
   }
 }

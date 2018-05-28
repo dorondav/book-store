@@ -1,5 +1,5 @@
 <div class="flex-container">
-  <div class="card" style="width: 18rem;" *ngFor="let book of arrBooks">
+  <div class="card" style="width: 18rem;" *ngFor="let book of bookDepository; let book of editBook; let i = index">
     <img class="card-img-top" src="{{ book.image }}" alt="Card image cap">
     <div class="card-body">
       <h4 class="card-title">{{ book.title }}</h4>
