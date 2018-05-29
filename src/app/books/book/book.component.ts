@@ -5,11 +5,12 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormGroup, FormControl, Validators, NgForm } from "@angular/forms";
 import { BookInformation } from "../../book.model";
+import { ValidationsService } from "../validattions.service";
 @Component({
   selector: "app-book",
   templateUrl: "./book.component.html",
   styleUrls: ["./book.component.css"],
-  providers: []
+  providers: [ValidationsService]
 })
 export class BookComponent implements OnInit {
   books: BookInformation[];
@@ -28,7 +29,8 @@ export class BookComponent implements OnInit {
     private getDataService: GetDataService,
     private router: Router,
     private route: ActivatedRoute,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private Valid: ValidationsService
   ) {}
 
   showBookOnSelectInfo() {
@@ -54,15 +56,6 @@ export class BookComponent implements OnInit {
 
   onUpdateBook() {
     this.getDataService.getUrlId();
-
-    // this.getDataService.getBook(index);
-    // const newBook = new BookInformation(
-    //   this.id,
-    //   this.editBook.value["title"],
-    //   this.editBook.value["date"],
-    //   this.editBook.value["author"],
-    //   this.editBook.value["image"]
-    // );
     this.getDataService.updateBook(this.id, this.editBook.value);
   }
 
@@ -86,7 +79,10 @@ export class BookComponent implements OnInit {
       this.editBook = new FormGroup({
         author: new FormControl(bookToEdit.author, Validators.required),
         title: new FormControl(bookToEdit.title, Validators.required),
-        date: new FormControl(bookToEdit.date, Validators.required),
+        date: new FormControl(bookToEdit.date, [
+          Validators.required,
+          this.Valid.dateValidator.bind(this)
+        ]),
         image: new FormControl(bookToEdit.image, Validators.required)
       });
     });

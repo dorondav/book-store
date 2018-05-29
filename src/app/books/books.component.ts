@@ -4,13 +4,14 @@ import { Http, Response, Headers } from "@angular/http";
 import { NewBookService } from "../new-book-service.service";
 import { BookInformation } from "../book.model";
 import { GetDataService } from "./get-data-service.service";
+import { TrimPipe } from "../trim.pipe";
 // import { AddBookComponent } from "./add-book/add-book.component";
 
 @Component({
   selector: "app-books",
   templateUrl: "./books.component.html",
   styleUrls: ["./books.component.css"],
-  providers: [GetDataService]
+  providers: [TrimPipe]
 })
 export class BooksComponent implements OnInit {
   constructor(private getDataService: GetDataService, private router: Router) {}

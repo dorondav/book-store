@@ -2,12 +2,13 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { BookInformation } from "../../book.model";
 import { GetDataService } from "../get-data-service.service";
+import { ValidationsService } from "../validattions.service";
 
 @Component({
   selector: "app-add-book",
   templateUrl: "./add-book.component.html",
   styleUrls: ["./add-book.component.css"],
-  providers: []
+  providers: [ValidationsService]
 })
 export class AddBookComponent implements OnInit {
   addBookForm: FormGroup;
@@ -26,7 +27,10 @@ export class AddBookComponent implements OnInit {
     addImage: string;
   }[] = [];
 
-  constructor(private getDataService: GetDataService) {}
+  constructor(
+    private getDataService: GetDataService,
+    private Valid: ValidationsService
+  ) {}
 
   onNewSave() {
     this.getDataService.getUrlId();
@@ -46,7 +50,10 @@ export class AddBookComponent implements OnInit {
         Validators.required,
         Validators.minLength(2)
       ]),
-      addDate: new FormControl(null, Validators.required),
+      addDate: new FormControl(null, [
+        Validators.required,
+        this.Valid.dateValidator.bind(this)
+      ]),
       addImage: new FormControl(null, Validators.required)
     });
   }

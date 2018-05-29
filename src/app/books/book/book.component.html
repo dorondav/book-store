@@ -1,8 +1,8 @@
 <div class="jumbotron">
   <button type="submit" class="btn btn-danger  deleteBtn" (click)=" deleteBookBtn(id)">Delete book</button>
   <img class="float-left" src="{{bookDepository.image}}">
-  <h1 class="bookName">{{bookDepository.title}}</h1>
-  <p>Author: {{bookDepository.author}}</p>
+  <h1 class="bookName">{{bookDepository.title | titlecase | trim }}</h1>
+  <p>Author: {{bookDepository.author | titlecase | trim }}</p>
   <p>Publication date: {{bookDepository.date | date: 'dd/MM/yyyy' }}</p>
   <div class="btnClass">
     <button class="btn btn-primary col-xs-4  editBtn" type="button" (click)="onEdit(content)">Edit Book</button>

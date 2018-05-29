@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { BookInformation } from "../book.model";
 import { Params, ActivatedRoute, Router } from "@angular/router";
 import { Subject } from "rxjs";
+import { FormControl } from "@angular/forms";
 @Injectable()
 export class GetDataService {
   constructor(private router: Router, private route: ActivatedRoute) {}
@@ -38,9 +39,9 @@ export class GetDataService {
     },
     {
       id: 5,
-      title: "test",
+      title: "test DDDDD55DDDDD@#$SDFDSFsdfכגD",
       date: "2.184",
-      author: "test",
+      author: "t65%%est",
       image: "../assets/images/nutcracker.jpg"
     }
   ];
