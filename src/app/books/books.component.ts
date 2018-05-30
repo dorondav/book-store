@@ -11,7 +11,7 @@ import { TrimPipe } from "../trim.pipe";
   selector: "app-books",
   templateUrl: "./books.component.html",
   styleUrls: ["./books.component.css"],
-  providers: [TrimPipe]
+  providers: [TrimPipe, GetDataService]
 })
 export class BooksComponent implements OnInit {
   constructor(private getDataService: GetDataService, private router: Router) {}
@@ -30,7 +30,7 @@ export class BooksComponent implements OnInit {
     this.getDataService.getUrlId();
     this.bookDepository = this.getDataService.bookDepository;
     this.getDataService.bookChanged.subscribe((books: BookInformation[]) => {
-      this.books = books;
+      this.bookDepository = this.getDataService.bookDepository;
     });
   }
 }

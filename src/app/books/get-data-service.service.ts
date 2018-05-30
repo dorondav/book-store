@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { BookInformation } from "../book.model";
 import { Params, ActivatedRoute, Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
 @Injectable()
-export class GetDataService {
+export class GetDataService implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute) {}
   id = "";
   bookChanged = new Subject<BookInformation[]>();
@@ -39,8 +39,8 @@ export class GetDataService {
     },
     {
       id: 5,
-      title: "test DDDDD55DDDDD@#$SDFDSFsdfכגD",
-      date: "2.184",
+      title: "test DDDDDDDDD@#$SDFDSFsdfכגD",
+      date: "2.02.32",
       author: "t65%%est",
       image: "../assets/images/nutcracker.jpg"
     }
@@ -51,6 +51,9 @@ export class GetDataService {
       this.id = params["id"];
     });
   }
+  ngOnInit(): void {
+    this.getUrlId();
+  }
   getBook(id: number) {
     this.route.params.subscribe(params => {
       this.id = params["id"];
@@ -59,16 +62,18 @@ export class GetDataService {
   }
 
   addNewBook(book: BookInformation) {
-    this.bookDepository.push(book);
+    this.bookDepository.push(this.bookChanged);
     this.bookChanged.next(this.bookDepository.slice());
   }
 
   updateBook(id: number, newBook: BookInformation) {
     this.route.params.subscribe(params => {
       this.id = params["id"];
+      console.log("tref:" + this.id);
+
       this.bookDepository[this.id] = newBook;
       this.bookChanged.next(this.bookDepository.slice());
-      console.log(this.bookDepository[this.id]);
+      console.log(this.bookDepository);
     });
   }
 }

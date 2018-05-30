@@ -55,8 +55,10 @@ export class BookComponent implements OnInit {
   }
 
   onUpdateBook() {
-    this.getDataService.getUrlId();
-    this.getDataService.updateBook(this.id, this.editBook.value);
+    this.route.params.subscribe(params => {
+      this.id = params["id"];
+      this.getDataService.updateBook(this.id, this.editBook.value);
+    });
   }
 
   ngOnInit() {
