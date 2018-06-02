@@ -17,6 +17,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { NewBookService } from "./new-book-service.service";
 import { ValidationsService } from "./books/validattions.service";
 import { TrimPipe } from "./trim.pipe";
+import { BookDataService } from "./book-data-service.service";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { TrimPipe } from "./trim.pipe";
     ReactiveFormsModule,
     NgbModule.forRoot()
   ],
-  providers: [GetDataService, ValidationsService],
+  providers: [ValidationsService, BookDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

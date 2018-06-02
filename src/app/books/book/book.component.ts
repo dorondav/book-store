@@ -6,6 +6,9 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormGroup, FormControl, Validators, NgForm } from "@angular/forms";
 import { BookInformation } from "../../book.model";
 import { ValidationsService } from "../validattions.service";
+import { BookDataService } from "../../book-data-service.service";
+import { isArray } from "rxjs/internal/util/isArray";
+import { FileUploadService } from "../../file-upload.service";
 @Component({
   selector: "app-book",
   templateUrl: "./book.component.html",
@@ -13,40 +16,42 @@ import { ValidationsService } from "../validattions.service";
   providers: [ValidationsService]
 })
 export class BookComponent implements OnInit {
-  books: BookInformation[];
   editBook: FormGroup;
   id: number;
-
-  bookDepository: {
-    id: number;
-    title: string;
-    author: string;
-    image: string;
-    date: string;
-  };
+  books: Array<BookInformation>;
+  fileToUpload: File;
 
   constructor(
-    private getDataService: GetDataService,
+    private getDataService: BookDataService,
     private router: Router,
     private route: ActivatedRoute,
     private modalService: NgbModal,
+    private uploadService: FileUploadService,
     private Valid: ValidationsService
-  ) {}
+  ) {
+    this.books = new Array<BookInformation>();
+  }
 
   showBookOnSelectInfo() {
-    this.bookDepository = {
-      id: this.route.snapshot.params["id"],
-      title: this.route.snapshot.params["title"],
-      author: this.route.snapshot.params["author"],
-      image: this.route.snapshot.params["image"],
-      date: this.route.snapshot.params["date"]
-    };
+    this.books.push(
+      new BookInformation(
+        this.route.snapshot.params["id"],
+        this.route.snapshot.params["title"],
+        this.route.snapshot.params["author"],
+        this.route.snapshot.params["image"],
+        this.route.snapshot.params["date"]
+      )
+    );
+
+    console.log(this.books);
     this.route.params.subscribe((params: Params) => {
-      this.bookDepository.id = params["id"];
-      this.bookDepository.title = params["title"];
-      this.bookDepository.author = params["author"];
-      this.bookDepository.image = params["image"];
-      this.bookDepository.date = params["date"];
+      this.books.map(book => {
+        book.id = params["id"];
+        book.title = params["title"];
+        book.author = params["author"];
+        book.image = params["image"];
+        book.date = params["date"];
+      });
     });
   }
 
@@ -54,25 +59,58 @@ export class BookComponent implements OnInit {
     this.modalService.open(content, { size: "lg", centered: true });
   }
 
+  getFormValue() {
+    let bookInfo = this.editBook;
+    return new BookInformation(
+      this.route.snapshot.params["id"],
+      bookInfo.get("title").value,
+      bookInfo.get("date").value,
+      bookInfo.get("author").value,
+      bookInfo.get("image").value
+    );
+  }
+
+  handleFile(files) {
+    let file = files.item(0);
+    console.log(file);
+    this.fileToUpload = file;
+  }
+
+  myObserver = {
+    next: x => console.log("Observer got a next value: " + x),
+    error: err => console.error("Observer got an error: " + err),
+    complete: () => console.log("Observer got a complete notification")
+  };
+
   onUpdateBook() {
     this.route.params.subscribe(params => {
       this.id = params["id"];
-      this.getDataService.updateBook(this.id, this.editBook.value);
+      let bookInfo = this.getFormValue();
+      this.getDataService.setData(this.id, bookInfo);
+      this.books.pop();
+      this.books.push(bookInfo);
+
+      this.uploadService.uploadFile(this.fileToUpload).subscribe(
+        event => {
+          console.log(event.type);
+        },
+        err => {
+          console.log(err);
+        }
+      );
     });
   }
 
   ngOnInit() {
-    this.getDataService.getUrlId();
+    console.log("Init");
     this.showBookOnSelectInfo();
     this.initForm();
-    this.getDataService.bookChanged.subscribe((books: BookInformation[]) => {
-      this.books = books;
-    });
   }
 
   private initForm() {
     this.route.params.subscribe(params => {
       let bookToEdit = params;
+      console.log(bookToEdit);
       let author = "";
       let title = "";
       let date = "";
@@ -85,7 +123,7 @@ export class BookComponent implements OnInit {
           Validators.required,
           this.Valid.dateValidator.bind(this)
         ]),
-        image: new FormControl(bookToEdit.image, Validators.required)
+        image: new FormControl(bookToEdit.imgFile, Validators.required)
       });
     });
   }

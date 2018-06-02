@@ -5,6 +5,7 @@ import { NewBookService } from "../new-book-service.service";
 import { BookInformation } from "../book.model";
 import { GetDataService } from "./get-data-service.service";
 import { TrimPipe } from "../trim.pipe";
+import { BookDataService } from "../book-data-service.service";
 // import { AddBookComponent } from "./add-book/add-book.component";
 
 @Component({
@@ -14,23 +15,19 @@ import { TrimPipe } from "../trim.pipe";
   providers: [TrimPipe, GetDataService]
 })
 export class BooksComponent implements OnInit {
-  constructor(private getDataService: GetDataService, private router: Router) {}
-  books: BookInformation[];
+  constructor(
+    private bookDataService: BookDataService,
+    private router: Router
+  ) {}
+  books: Array<BookInformation>;
   id: number;
 
-  bookDepository: {
-    id: number;
-    title: string;
-    date: string;
-    author: string;
-    image: string;
-  }[] = [];
-
   ngOnInit() {
-    this.getDataService.getUrlId();
-    this.bookDepository = this.getDataService.bookDepository;
-    this.getDataService.bookChanged.subscribe((books: BookInformation[]) => {
-      this.bookDepository = this.getDataService.bookDepository;
-    });
+    this.books = this.bookDataService.getData();
+    // this.getDataService.getUrlId();
+    // this.bookDepository = this.getDataService.bookDepository;
+    // this.getDataService.bookChanged.subscribe((books: BookInformation[]) => {
+    //   this.bookDepository = this.getDataService.bookDepository;
+    // });
   }
 }
