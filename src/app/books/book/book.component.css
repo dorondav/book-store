@@ -20,6 +20,7 @@ img {
 .jumbotron {
   margin: 5%;
   height: 280px;
+  font-family: 'Playfair Display', serif;
 }
 
 .bookName {
@@ -34,10 +35,15 @@ img {
   float: right;
 }
 
+.modal-header {
+  font-family: 'Libre Baskerville', serif;
+}
+
 @media only screen and (max-width: 900px) {
   .jumbotron {
     margin: 5%;
     height: 400px;
+    font-family: 'Playfair Display', serif;
   }
   .goBackBtn {
     width: 250px;

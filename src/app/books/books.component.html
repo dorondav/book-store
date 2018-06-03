@@ -2,10 +2,9 @@
   <div class="card" style="width: 18rem;" *ngFor="let book of books; let book of editBook; let i = index">
     <img class="card-img-top" src="{{ book.image }}" alt="Card image cap">
     <div class="card-body">
-      <h4 class="card-title">{{ book.title | titlecase }}</h4>
+      <h4 class="card-title">{{ book.title | titlecase | trim }}</h4>
       <p class="card-text"> {{book.author | titlecase| trim }}</p>
-      <button type="button" [routerLink]="['/books', book.id,  book.title, book.author, book.image, book.date]" [queryParams]="{selectedBookData: book.id} "
-        class="btn btn-primary ">More Details</button>
+      <button type="button" [routerLink]="['/books', book.id,  book.title, book.author, book.image, book.date]" class="btn btn-primary ">More Details</button>
     </div>
   </div>
 </div>

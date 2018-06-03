@@ -6,6 +6,7 @@
   background: -webkit-linear-gradient(to top, #243b55, #141e30);
   background: linear-gradient(to top, #243b55, #141e30);
   height: 90px;
+  font-family: 'Lobster', cursive;
 }
 
 .flex-container .headerLineup {

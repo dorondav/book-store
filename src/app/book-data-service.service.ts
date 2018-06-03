@@ -6,26 +6,41 @@ import { Http } from "@angular/http";
 @Injectable({
   providedIn: "root"
 })
-export class BookDataService implements DataService<BookInformation>, OnInit {
-  constructor(private http: Http) {}
-  books = [];
-  insertNewElement(data: BookInformation[]): boolean {
-    throw new Error("Method not implemented.");
+export class BookDataService implements DataService<BookInformation> {
+  constructor(private http: Http) {
+    this.initData();
   }
+  books: Array<BookInformation>;
+
+  insertNewElement(data: BookInformation) {
+    this.books.push(data);
+  }
+
   setData(id: number, data: BookInformation) {
+    console.log("Saving " + id);
     this.books
       .filter(element => element.id == id)
-      .forEach(element => (element = data));
-    console.log(data);
+      .forEach(element => (this.books[this.books.indexOf(element)] = data));
   }
 
   getData() {
-    var arr = new Array<BookInformation>();
+    return this.books;
+  }
+
+  deleteData(id: number) {
+    this.books
+      .filter(element => element.id == id)
+      .forEach(element => this.books.splice(this.books.indexOf(element), 1));
+  }
+
+  initData() {
+    console.log("INIT DATA");
+    this.books = new Array<BookInformation>();
     this.http.get("../assets/data/books.json").subscribe(res => {
-      arr = res
+      res
         .json()
         .map(element =>
-          arr.push(
+          this.books.push(
             new BookInformation(
               element.id,
               element.title,
@@ -35,10 +50,6 @@ export class BookDataService implements DataService<BookInformation>, OnInit {
             )
           )
         );
-      console.log(arr);
     });
-    return arr;
   }
-
-  ngOnInit() {}
 }

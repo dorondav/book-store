@@ -6,7 +6,6 @@
         <label for="title">Book Title:</label>
         <input type="text" class="form-control" id="addTitle" [formControlName]="'addTitle'">
         <span class="help-block" *ngIf="!addBookForm.get('addTitle').valid && addBookForm.get('addTitle').touched">Please enter book title</span>
-
       </div>
       <div class="form-group">
         <label for="author">Book ID:</label>
@@ -22,16 +21,15 @@
         <label for="date">Publication Date:</label>
         <input type="date" class="form-control" id="addeDate" [formControlName]="'addDate'">
         <span class="help-block" *ngIf="!addBookForm.get('addDate').valid && addBookForm.get('addDate').touched">Please enter publication date</span>
-
       </div>
-      <div class="form-group">
+      <div class="form-group ">
         <label for="image">cover:</label>
-        <input type="file" id="addImage" [formControlName]="'addImage'">
+        <select id="addImage" [formControlName]="'addImage'" name="addImage" class="custom-select custom-select-lg mb-3">
+          <option *ngFor="let image of images" [value]="image.url">{{image.name}}</option>
+        </select>
         <span class="help-block" *ngIf="!addBookForm.get('addImage').valid && addBookForm.get('addImage').touched">Please enter book cover</span>
-
       </div>
-
-      <button type="submit" class="btn btn-primary addBook">Save</button>
+      <button type="submit" class="btn btn-primary addBook" [disabled]="!addBookForm.valid">Save</button>
       <button type="submit" class="btn btn-danger cancel" routerLink="/books/">Cancel </button>
 
     </form>

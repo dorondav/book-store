@@ -1,4 +1,4 @@
-<div class="jumbotron">
+<div class="jumbotron" *ngIf="!isDeleted">
   <button type=" submit " class="btn btn-danger deleteBtn " (click)=" deleteBookBtn(id) ">Delete book</button>
   <div *ngFor="let book of books">
     <img class="float-left" [src]="book.image ">
@@ -11,9 +11,6 @@
     </div>
   </div>
 </div>
-
-
-
 <ng-template #content let-c="close " let-d="dismiss ">
   <div class="modal-header ">
     <h4 class="modal-title ">Edit Book</h4>
@@ -22,9 +19,7 @@
     </button>
   </div>
   <div class="modal-body ">
-
     <form [formGroup]="editBook " (ngSubmit)="onUpdateBook(editBook)">
-
       <div class="form-group ">
         <label for="title ">Book Title: </label>
         <input type="text " class="form-control " name="title " id="editTitle " [formControlName]=" 'title' ">
@@ -34,20 +29,21 @@
         <label for="author ">Author: </label>
         <input type="text " class="form-control " [formControlName]=" 'author' " id="editAuthor ">
         <span class="help-block " *ngIf="!editBook.get( 'author').valid && editBook.get( 'author').touched ">Please enter author name</span>
-
       </div>
       <div class="form-group ">
         <label for="date">Publication Date:</label>
         <input type="date" class="form-control " [formControlName]=" 'date' " id="editeDate ">
-        <!-- <span *ngIf="!editBook.get( 'date').valid && editBook.get( 'date').touched " class="help-block ">Please enter Publication date</span> -->
+        <span *ngIf="!editBook.get( 'date').valid && editBook.get( 'date').touched " class="help-block ">Please enter valid Publication date</span>
       </div>
       <div class="form-group ">
         <label for="image">cover:</label>
-        <input type="file" [formControlName]="  'image' " (change)="handleFile($event.target.files)" name="imgFile" id="imgFile">
-        <!-- <span class="help-block " *ngIf="!editBook.get('image').valid && editBook.get('date').touched ">Please enter book cover</span> -->
+        <select id="addImage" [formControlName]="'addImage'" name="addImage" class="custom-select custom-select-lg mb-3">
+          <option *ngFor="let image of images" [value]="image.url">{{image.name}}</option>
+        </select>
+        <span class="help-block " *ngIf="!editBook.get('addImage').valid && editBook.get('date').touched ">Please enter book cover</span>
       </div>
       <div class="modal-footer ">
-        <button type="submit " class="btn btn-primary footerBtn ">Save</button>
+        <button type="submit " class="btn btn-primary footerBtn " [disabled]="!editBook.valid">Save</button>
         <button type="submit " class="btn btn-danger footerBtn " (click)="c( 'Close click') ">Cancel</button>
       </div>
     </form>

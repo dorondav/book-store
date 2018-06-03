@@ -9,15 +9,13 @@ import { AppComponent } from "./app.component";
 import { BooksComponent } from "./books/books.component";
 import { HeaderComponent } from "./header/header.component";
 import { BookComponent } from "./books/book/book.component";
-import { GetDataService } from "./books/get-data-service.service";
-import { ShortenPipe } from "./shorten.pipe";
 import { AddBookComponent } from "./books/add-book/add-book.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { AppRoutingModule } from "./app-routing.module";
-import { NewBookService } from "./new-book-service.service";
 import { ValidationsService } from "./books/validattions.service";
 import { TrimPipe } from "./trim.pipe";
 import { BookDataService } from "./book-data-service.service";
+import { GetCoverService } from "./get-cover.service";
 
 @NgModule({
   declarations: [
@@ -25,7 +23,6 @@ import { BookDataService } from "./book-data-service.service";
     BooksComponent,
     HeaderComponent,
     BookComponent,
-    ShortenPipe,
     AddBookComponent,
     PageNotFoundComponent,
     TrimPipe
@@ -39,7 +36,7 @@ import { BookDataService } from "./book-data-service.service";
     ReactiveFormsModule,
     NgbModule.forRoot()
   ],
-  providers: [ValidationsService, BookDataService],
+  providers: [ValidationsService, BookDataService, GetCoverService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,33 +1,27 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { Http, Response, Headers } from "@angular/http";
-import { NewBookService } from "../new-book-service.service";
 import { BookInformation } from "../book.model";
-import { GetDataService } from "./get-data-service.service";
 import { TrimPipe } from "../trim.pipe";
 import { BookDataService } from "../book-data-service.service";
-// import { AddBookComponent } from "./add-book/add-book.component";
+import { GetCoverService } from "../get-cover.service";
 
 @Component({
   selector: "app-books",
   templateUrl: "./books.component.html",
   styleUrls: ["./books.component.css"],
-  providers: [TrimPipe, GetDataService]
+  providers: [TrimPipe]
 })
 export class BooksComponent implements OnInit {
   constructor(
     private bookDataService: BookDataService,
-    private router: Router
+    private router: Router,
+    private covers: GetCoverService
   ) {}
   books: Array<BookInformation>;
-  id: number;
+  images = [];
 
   ngOnInit() {
     this.books = this.bookDataService.getData();
-    // this.getDataService.getUrlId();
-    // this.bookDepository = this.getDataService.bookDepository;
-    // this.getDataService.bookChanged.subscribe((books: BookInformation[]) => {
-    //   this.bookDepository = this.getDataService.bookDepository;
-    // });
+    this.covers.getImageData();
   }
 }

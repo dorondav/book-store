@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { BookInformation } from "../../book.model";
-import { GetDataService } from "../get-data-service.service";
 import { ValidationsService } from "../validattions.service";
+import { BookDataService } from "../../book-data-service.service";
+import { GetCoverService } from "../../get-cover.service";
+import { CoverData } from "../../cover.model";
 
 @Component({
   selector: "app-add-book",
@@ -12,40 +14,18 @@ import { ValidationsService } from "../validattions.service";
 })
 export class AddBookComponent implements OnInit {
   addBookForm: FormGroup;
-  addedBook: any;
-  bookDepository = [];
-  id: number;
-  addAuthor: string = "";
-  addTitle: string = "";
-  addDate: string = "";
-  addImage: string = "";
-  newBookArray: {
-    id: number;
-    addAuthor: string;
-    addTitle: string;
-    addDate: string;
-    addImage: string;
-  }[] = [];
+  books: Array<BookInformation>;
+  images: Array<CoverData>;
 
   constructor(
-    private getDataService: GetDataService,
-    private Valid: ValidationsService
+    private getDataService: BookDataService,
+    private Valid: ValidationsService,
+    private coverService: GetCoverService
   ) {}
 
-  onNewSave() {
-    this.getDataService.getUrlId();
-    this.getDataService.addNewBook(this.addBookForm.value);
-    console.log(this.addBookForm);
-    return this.addBookForm;
-  }
-
-  ngOnInit() {
+  onFormInit() {
     this.addBookForm = new FormGroup({
       id: new FormControl(null, Validators.required),
-      addAuthor: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(4)
-      ]),
       addTitle: new FormControl(null, [
         Validators.required,
         Validators.minLength(2)
@@ -54,7 +34,34 @@ export class AddBookComponent implements OnInit {
         Validators.required,
         this.Valid.dateValidator.bind(this)
       ]),
+      addAuthor: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(4)
+      ]),
       addImage: new FormControl(null, Validators.required)
     });
+  }
+
+  getFormValue() {
+    let bookInfo = this.addBookForm;
+    console.log(bookInfo.get("addImage").value);
+    return new BookInformation(
+      bookInfo.get("id").value,
+      bookInfo.get("addTitle").value,
+      bookInfo.get("addDate").value,
+      bookInfo.get("addAuthor").value,
+      bookInfo.get("addImage").value
+    );
+  }
+
+  onNewSave() {
+    let bookInfo = this.getFormValue();
+    this.getDataService.insertNewElement(bookInfo);
+    console.log(bookInfo);
+  }
+
+  ngOnInit() {
+    this.onFormInit();
+    this.images = this.coverService.getImageData();
   }
 }
