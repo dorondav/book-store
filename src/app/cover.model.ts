@@ -1,5 +1,3 @@
-import { constants } from "os";
-
 export class CoverData {
   public id = this.id;
   public name = this.name;
